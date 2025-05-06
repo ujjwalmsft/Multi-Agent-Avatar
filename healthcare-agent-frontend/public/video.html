@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Talking Avatar Service Demo</title>
+    <script src="https://aka.ms/csspeech/jsbrowserpackageraw"></script>
+    <script src="./video.js"></script>
+    <style>
+        /* Reset styles */
+        html, body {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: transparent;
+        }
+        
+        /* Main container takes full viewport */
+        .main-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: transparent;
+            position: relative;
+        }
+        
+        /* Video container */
+        #videoContainer {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: transparent;
+            position: relative;
+        }
+        
+        /* Remote video container */
+        #remoteVideo {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        /* Video element itself */
+        video {
+            width: 100%;
+            height: 100%;
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        
+        /* Subtitles */
+        #subtitles {
+            width: 100%;
+            text-align: center;
+            color: white;
+            font-size: 24px;
+            position: absolute;
+            bottom: 20px;
+            z-index: 50;
+            text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+        }
+        
+        /* Hidden elements */
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div id="videoContainer">
+            <div id="subtitles" class="hidden"></div>
+            <canvas id="canvas" width="1920" height="1080" class="hidden"></canvas>
+            <canvas id="tmpCanvas" width="1920" height="1080" class="hidden"></canvas>
+            <div id="remoteVideo"></div>
+        </div>
+    </div>
+    <script>
+        window.addEventListener('message', (event) => {
+            if (event.data.type === 'START_SESSION') {
+                window.startSession();
+            } else if (event.data.type === 'STOP_SESSION') {
+                window.stopSession();
+            } else if (event.data.type === 'SPEAK') {
+                window.speak(event.data.text);
+            } else if (event.data.type === 'STOP_SPEAKING') {
+                window.stopSpeaking();
+            }
+        });
+    </script>
+</body>
+</html>
